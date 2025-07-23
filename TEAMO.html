@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Te Amo Muchote Ana</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
     html, body {
       margin: 0;
@@ -81,7 +80,8 @@
         textCtx = textCanvas.getContext("2d");
     textCanvas.width = W;
     textCanvas.height = H;
-    textCtx.font = `bold ${FONT_SIZE}px 'Dancing Script', cursive`;
+    // Cambia la fuente aquí a Pacifico
+    textCtx.font = `bold ${FONT_SIZE}px 'Pacifico', cursive`;
     textCtx.textAlign = "center";
     textCtx.textBaseline = "middle";
     textCtx.fillStyle = "#fff";
@@ -143,9 +143,8 @@
     }
     function drawRain() {
       rainCtx.clearRect(0, 0, W, H);
-      rainCtx.font = "bold 20px 'Dancing Script', cursive";
       for (let drop of drops) {
-        rainCtx.font = `${drop.size}px 'Dancing Script', cursive`;
+        rainCtx.font = `${drop.size}px 'Pacifico', cursive`;
         rainCtx.fillStyle = `rgba(255, 255, 255, ${drop.opacity})`;
         rainCtx.fillText(drop.text, drop.x, drop.y);
         drop.y += drop.speed;
