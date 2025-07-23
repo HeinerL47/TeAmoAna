@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Te Amo Muchote Ana</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+    }
+
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #stars {
+      z-index: 0;
+    }
+
+    #canvas {
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <canvas id="canvas"></canvas>
+
+  <script>
+    // Fondo de estrellas animado
+    const starCanvas = document.getElementById('stars');
+    const starCtx = starCanvas.getContext('2d');
+    let sw = window.innerWidth;
+    let sh = window.innerHeight;
+    starCanvas.width = sw;
+    starCanvas.height = sh;
+
+    let stars = [];
+    for (let i = 0; i < 150; i++) {
+      stars.push({
+        x: Math.random() * sw,
+        y: Math.random() * sh,
+        radius: Math.random() * 1.5,
+        dx: (Math.random() - 0.5) * 0.5,
+        dy: (Math.random() - 0.5) * 0.5
+      });
+    }
+
+    function animateStars() {
+      starCtx.clearRect(0, 0, sw, sh);
+      starCtx.fillStyle = 'white';
+      for (let star of stars) {
+        star.x += star.dx;
+        star.y += star.dy;
+        if (star.x < 0 || star.x > sw) star.dx *= -1;
+        if (star.y < 0 || star.y > sh) star.dy *= -1;
+
+        starCtx.beginPath();
+        starCtx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        starCtx.fill();
+      }
+      requestAnimationFrame(animateStars);
+    }
+    animateStars();
+
+    // Texto animado con partículas
+    const TEXT = "Te Amo Muchote Ana";
+    const FONT_SIZE = 100;
+    const PARTICLE_SIZE = 2;
+    const SPACING = 6;
+    const COLOR = "#ff66cc";
+
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    let W = window.innerWidth, H = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
+
+    let textCanvas = document.createElement("canvas"),
+        textCtx = textCanvas.getContext("2d");
+    textCanvas.width = W;
+    textCanvas.height = H;
+    textCtx.font = `bold ${FONT_SIZE}px 'Great Vibes', cursive`;
+    textCtx.textAlign = "center";
+    textCtx.textBaseline = "middle";
+    textCtx.fillStyle = "#fff";
+    textCtx.fillText(TEXT, W/2, H/2);
+
+    let particles = [];
+    let imgData = textCtx.getImageData(0, 0, W, H);
+    for(let y = 0; y < H; y += SPACING){
+      for(let x = 0; x < W; x += SPACING){
+        let i = (y * W + x) * 4;
+        if(imgData.data[i + 3] > 128){
+          particles.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            tx: x,
+            ty: y,
+            vx: 0,
+            vy: 0
+          });
+        }
+      }
+    }
+
+    function animate(){
+      ctx.clearRect(0, 0, W, H);
+      for(let p of particles){
+        let dx = p.tx - p.x;
+        let dy = p.ty - p.y;
+        p.vx += dx * 0.01;
+        p.vy += dy * 0.01;
+        p.vx *= 0.9;
+        p.vy *= 0.9;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, PARTICLE_SIZE, 0, Math.PI*2);
+        ctx.fillStyle = COLOR;
+        ctx.shadowColor = COLOR;
+        ctx.shadowBlur = 10;
+        ctx.fill();
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Resize adaptativo
+    window.addEventListener('resize', () => location.reload());
+  </script>
+</body>
+</html>
